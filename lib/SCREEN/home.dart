@@ -27,35 +27,27 @@ class _HomePageState extends State<HomePage> {
                   borderColor: Colors.black,
                 ),
                 HomePageButton(
-                  label: 'login',
+                  label: 'Login',
                   onPressed: () => Navigator.pushNamed(context, '/login_page'),
-                  borderColor: Colors.black,
-                  backgroundColor: Colors.green,
+                  backgroundColor: const Color(0xFF2B8761),
+                  textColor: Colors.white,
                 ),
               ],
             ),
             const SizedBox(
               height: 20,
             ),
-            TextButton(
-              style: TextButton.styleFrom(
-                // backgroundColor: Colors.deepPurple,
-                padding: const EdgeInsets.symmetric(
-                    vertical: 18.0, horizontal: 100.0),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(32.0),
-                    side: const BorderSide(color: Colors.grey, width: 1.0)),
+            SizedBox(
+              width: double.infinity,
+              height: 60,
+              child: GoogleButton(
+                onPressed: () => Navigator.pushNamed(context, '/register_page'),
+                label: 'Login with Google',
+                textColor: Colors.black,
               ),
-              onPressed: () {
-                Navigator.pushNamed(context, '/register_page');
-              },
-              child: const Text(
-                'Login with Google',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-              ),
+            ),
+            const SizedBox(
+              height: 40,
             ),
           ],
         ),
