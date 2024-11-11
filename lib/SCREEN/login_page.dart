@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 50),
             const Text(
               'E-mail',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             TextField(
@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 30),
             const Text(
               'Password',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             TextField(
@@ -67,9 +67,12 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             const SizedBox(height: 10),
-            const Text(
-              'Forgot Password?',
-              style: TextStyle(fontSize: 16, color: Colors.blue),
+            const Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                'Forgot Password?',
+                style: TextStyle(fontSize: 16, color: Colors.blue),
+              ),
             ),
             const SizedBox(height: 40),
             SizedBox(
@@ -78,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
               child: GoogleButton(
                 onPressed: () => Navigator.pushNamed(context, '/register_page'),
                 label: 'Login',
-                textColor: Colors.black,
+                textColor: Colors.white,
                 backgroundColor: const Color(0xFF2B8761),
                 borderColor: Colors.transparent,
               ),
