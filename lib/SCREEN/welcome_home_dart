@@ -5,6 +5,7 @@ class WelcomeHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      final PostController postController = PostController();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Welcome Home'),
@@ -13,8 +14,7 @@ class WelcomeHomePage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
-              // Handle logout logic
-              Navigator.pushReplacementNamed(context, '/login');
+              Navigator.pushReplacementNamed(context, '/home');
             },
           ),
         ],
@@ -71,9 +71,10 @@ class WelcomeHomePage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                // Navigate back to login page or logout
-                Navigator.pushReplacementNamed(context, '/login');
+              onPressed: () async {
+                  await postController.logout(context);
+
+            Navigator.pushReplacementNamed(context, '/home');
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
