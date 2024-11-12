@@ -1,3 +1,95 @@
+import 'package:dio/dio.dart';
+
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+final dio = Dio();
+String? errorMessage;
+// With default Options.
+
+Dio axios() {
+  const storage = FlutterSecureStorage();
+  // dio.options.baseUrl = "http://10.0.2.2:8000/api/";
+
+// dio.options.baseUrl = 'http://192.168.249.63:8000/api';
+ 
+  dio.options.connectTimeout = const Duration(seconds: 60);
+  dio.options.receiveTimeout = const Duration(seconds: 60);
+  dio.options.headers['accept'] = 'Application/Json';
+  dio.interceptors.add(
+    InterceptorsWrapper(
+      onRequest:
+          (RequestOptions options, RequestInterceptorHandler handler) async {
+        final token = await storage.read(key: 'token');
+        options.headers['Authorization'] = 'Bearer $token';
+        return handler.next(options);
+      },
+      onResponse: (Response response, ResponseInterceptorHandler handler) {
+        return handler.next(response);
+      },
+      onError: (DioException e, ErrorInterceptorHandler handler) {
+        String errorMessage;
+        switch (e.type) {
+          case DioExceptionType.badResponse:
+          // errorMessage = 'Bad request';
+            if (e.response!.statusCode! >= 400 && e.response!.statusCode! < 500) {
+              errorMessage = e.response!.data['message']??'Bad request or Unauthorized';
+            }
+            // else if (e.response?.statusCode == 400) {
+            //   errorMessage = 'Bad request';
+            // }
+            
+            //  else if (e.response?.statusCode == 405) {
+            //   errorMessage = 'Forbidden';
+            // } 
+            // else if (e.response?.statusCode == 500) {
+            //   errorMessage = e.response!.data['message']??'Something went wrong';
+            // } else if (e.response?.statusCode == 501) {
+            //   errorMessage = "Service Unavailable:";
+            // }
+            else {
+              errorMessage = 'Something went wrong';
+            }
+            break;
+          case DioExceptionType.connectionTimeout:
+            errorMessage = 'Connection Timeout';
+            break;
+          case DioExceptionType.receiveTimeout:
+            errorMessage = 'Unable to receive from the server';
+            break;
+          case DioExceptionType.sendTimeout:
+            errorMessage = 'Please check your internet connection';
+            break;
+          case DioExceptionType.unknown:
+              errorMessage = 'Something went wrong';
+            break;
+          default:
+            errorMessage = 'An error occurred';
+            break;
+        }
+
+        // Create a new DioError instance with the custom message
+        DioException customError = DioException(
+            requestOptions: e.requestOptions,
+            response: e.response,
+            type: e.type,
+            error: errorMessage,
+            message: e.message);
+        return handler.next(customError);
+      },
+    ),
+  );
+
+  return dio;
+}
+
+
+
+
+
+
+
+
+
 
 // class PostController {
 //   final Dio _dio = Dio();
@@ -39,3 +131,7 @@
 //     return await _secureStorage.read(key: 'token');
 //   }
 // }
+
+
+
+

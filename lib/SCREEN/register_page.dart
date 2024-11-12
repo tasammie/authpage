@@ -17,30 +17,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   // final TextEditingController _confirmPasswordController = TextEditingController();
 
-  // void _register() {
-  //   String firstName = _firstNameController.text;
-  //   String lastName = _lastNameController.text;
-  //   String email = _emailController.text;
-  //   String password = _passwordController.text;
-  //   // String confirmPassword = _confirmPasswordController.text;
-
-  //   // if (password != confirmPassword) {
-  //   //   ScaffoldMessenger.of(context).showSnackBar(
-  //   //     const SnackBar(content: Text('Passwords do not match')),
-  //   //   );
-  //   //   return;
-  //   // }
-
-  //   final data = {
-  //     'firstName': firstName,
-  //     'lastName': lastName,
-  //     'email': email,
-  //     'password': password,
-  //   };
-
-  //   _authController.register(data);
-  // }
-
   void _register() async {
     String firstName = _firstNameController.text;
     String lastName = _lastNameController.text;
@@ -51,6 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
       'firstName': firstName,
       'lastName': lastName,
       'email': email,
+      'password': password
     };
 
     if (firstName.isEmpty ||
@@ -68,26 +45,34 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     try {
-      await _authController.register(userData);
+      final response = await _authController.register(userData);
 
-      // Show success SnackBar
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Registration successful!"),
-          backgroundColor: Colors.green,
-          duration: Duration(seconds: 2),
-        ),
-      );
-
-      // Navigate to another page after successful registration
-      // Navigator.pushReplacementNamed(context, '/home');
+      if (response['statusCode'] == 409) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Email already exists"),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 2),
+          ),
+        );
+        return;
+      } else if (response['statusCode'] == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Registration successful!"),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      } else {
+        throw Exception("Unexpected error occurred");
+      }
     } catch (e) {
-      // Show error SnackBar
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Registration failed. Try again."),
+        SnackBar(
+          content: Text("Registration failed: ${e.toString()}"),
           backgroundColor: Colors.red,
-          duration: Duration(seconds: 2),
+          duration: const Duration(seconds: 2),
         ),
       );
     }
