@@ -1,4 +1,5 @@
 import 'package:auth_page/SCREEN/homepagebutton.dart';
+import 'package:auth_page/SERVICES/post_controller.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -9,6 +10,89 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final PostController _authController = PostController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  // final TextEditingController _confirmPasswordController = TextEditingController();
+
+  // void _register() {
+  //   String firstName = _firstNameController.text;
+  //   String lastName = _lastNameController.text;
+  //   String email = _emailController.text;
+  //   String password = _passwordController.text;
+  //   // String confirmPassword = _confirmPasswordController.text;
+
+  //   // if (password != confirmPassword) {
+  //   //   ScaffoldMessenger.of(context).showSnackBar(
+  //   //     const SnackBar(content: Text('Passwords do not match')),
+  //   //   );
+  //   //   return;
+  //   // }
+
+  //   final data = {
+  //     'firstName': firstName,
+  //     'lastName': lastName,
+  //     'email': email,
+  //     'password': password,
+  //   };
+
+  //   _authController.register(data);
+  // }
+
+  void _register() async {
+    String firstName = _firstNameController.text;
+    String lastName = _lastNameController.text;
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    Map<String, dynamic> userData = {
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+    };
+
+    if (firstName.isEmpty ||
+        lastName.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("All fields are required"),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    try {
+      await _authController.register(userData);
+
+      // Show success SnackBar
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Registration successful!"),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 2),
+        ),
+      );
+
+      // Navigate to another page after successful registration
+      // Navigator.pushReplacementNamed(context, '/home');
+    } catch (e) {
+      // Show error SnackBar
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Registration failed. Try again."),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,19 +123,15 @@ class _RegisterPageState extends State<RegisterPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('First Name',
-                        style: TextStyle(
-                              fontSize: 18, 
-                              fontWeight: FontWeight.bold)
-                      ),
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
                       TextField(
+                        controller: _firstNameController,
                         decoration: InputDecoration(
                           hintText: 'John',
-                          hintStyle:
-                              const TextStyle(fontSize: 20, color: Colors.grey),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.grey),
                           ),
                         ),
                       ),
@@ -68,13 +148,11 @@ class _RegisterPageState extends State<RegisterPage> {
                               fontSize: 18, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
                       TextField(
+                        controller: _lastNameController,
                         decoration: InputDecoration(
                           hintText: 'Doe',
-                          hintStyle:
-                              const TextStyle(fontSize: 20, color: Colors.grey),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.grey),
                           ),
                         ),
                       ),
@@ -83,65 +161,44 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 15,
-            ),
-            const Text(
-              'E-mail',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+            const SizedBox(height: 15),
+            const Text('E-mail',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             TextField(
+              controller: _emailController,
               decoration: InputDecoration(
                 hintText: 'Enter your email',
-                hintStyle: const TextStyle(fontSize: 20, color: Colors.grey),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.grey),
                 ),
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Password',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+            const Text('Password',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             TextField(
+              controller: _passwordController,
+              obscureText: true,
               decoration: InputDecoration(
                 hintText: 'Enter your password',
-                hintStyle: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.grey,
-                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.grey),
                 ),
-              ),
-            ),
-            const Text(
-              'must contain 8 characters',
-              style: TextStyle(
-                fontSize: 16,
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Confirm Password',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+            const Text('Confirm Password',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             TextField(
+              // controller: _confirmPasswordController,
+              obscureText: true,
               decoration: InputDecoration(
-                hintText: 'Enter your password',
-                hintStyle: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.grey,
-                ),
+                hintText: 'Re-enter your password',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.grey),
                 ),
               ),
             ),
@@ -150,24 +207,20 @@ class _RegisterPageState extends State<RegisterPage> {
               width: double.infinity,
               height: 60,
               child: GoogleButton(
-                onPressed: () => Navigator.pushNamed(context, '/'),
+                onPressed: _register,
                 label: 'Create a new account',
                 textColor: Colors.white,
                 backgroundColor: const Color(0xFF2B8761),
                 borderColor: Colors.transparent,
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             const Text(
               'By continuing, you agree to our Terms of Service and Privacy Policy.',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18),
             ),
-            const SizedBox(
-              height: 40,
-            ),
+            const SizedBox(height: 40),
           ],
         ),
       ),

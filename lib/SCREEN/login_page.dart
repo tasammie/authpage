@@ -1,4 +1,5 @@
 import 'package:auth_page/SCREEN/homepagebutton.dart';
+import 'package:auth_page/SERVICES/post_controller.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -9,6 +10,47 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final PostController _authController = PostController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  void _login() async {
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please fill in both email and password."),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    try {
+      await _authController.login(email, password);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Login successful!"),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 2),
+        ),
+      );
+
+      Navigator.pushReplacementNamed(context, '/welcome_home');
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Login failed. Please check your credentials."),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +80,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 8),
             TextField(
+              controller: _emailController,
               decoration: InputDecoration(
                 hintText: 'Enter your email',
                 hintStyle: const TextStyle(fontSize: 20, color: Colors.grey),
@@ -54,6 +97,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 8),
             TextField(
+              controller: _passwordController,
+              obscureText: true,
               decoration: InputDecoration(
                 hintText: 'Enter your password',
                 hintStyle: const TextStyle(
@@ -79,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
               width: double.infinity,
               height: 60,
               child: GoogleButton(
-                onPressed: () => Navigator.pushNamed(context, '/register_page'),
+                onPressed: _login,
                 label: 'Login',
                 textColor: Colors.white,
                 backgroundColor: const Color(0xFF2B8761),

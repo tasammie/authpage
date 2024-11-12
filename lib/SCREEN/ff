@@ -1,0 +1,41 @@
+
+// class PostController {
+//   final Dio _dio = Dio();
+//   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+
+//   // API endpoint URLs
+//   final String registerUrl = 'https://yourapi.com/register';
+//   final String loginUrl = 'https://yourapi.com/login';
+
+//   // Method for registration
+//   Future<void> register(Map<String, dynamic> data) async {
+//     try {
+//       final response = await _dio.post(registerUrl, data: data);
+//       // Save token to secure storage if successful
+//       if (response.statusCode == 200) {
+//         await _secureStorage.write(key: 'token', value: response.data['token']);
+//         print('Registration successful');
+//       }
+//     } catch (e) {
+//       print('Registration failed: $e');
+//     }
+//   }
+
+//   // Method for login
+//   Future<void> login(Map<String, dynamic> data) async {
+//     try {
+//       final response = await _dio.post(loginUrl, data: data);
+//       if (response.statusCode == 200) {
+//         await _secureStorage.write(key: 'token', value: response.data['token']);
+//         print('Login successful');
+//       }
+//     } catch (e) {
+//       print('Login failed: $e');
+//     }
+//   }
+
+//   // Retrieve token (for subsequent API calls)
+//   Future<String?> getToken() async {
+//     return await _secureStorage.read(key: 'token');
+//   }
+// }
