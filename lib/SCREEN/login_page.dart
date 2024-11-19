@@ -1,6 +1,6 @@
-import 'package:auth_page/SCREEN/homepagebutton.dart';
-import 'package:auth_page/SERVICES/post_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:auth_page/SERVICES/post_controller.dart';
+import 'package:auth_page/SCREEN/homepagebutton.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
           },
         ),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
               ),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 10),
             const Text(
               'E-mail',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -100,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             const Text(
               'Password',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -122,18 +122,22 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             const SizedBox(height: 10),
-            const Align(
+            Align(
               alignment: Alignment.centerRight,
-              child: Text(
-                'Forgot Password?',
-                style: TextStyle(fontSize: 16, color: Colors.blue),
+              child: TextButton(
+                onPressed: () =>
+                    Navigator.pushNamed(context, '/forgot_password'),
+                child: const Text(
+                  'Forgot Password?',
+                  style: TextStyle(fontSize: 16, color: Colors.blue),
+                ),
               ),
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 10),
             SizedBox(
               width: double.infinity,
               height: 60,
-              child: GoogleButton(
+              child: HomePageButton(
                 onPressed: _login,
                 label: 'Login',
                 textColor: Colors.white,
@@ -141,9 +145,8 @@ class _LoginPageState extends State<LoginPage> {
                 borderColor: Colors.transparent,
               ),
             ),
-            const Spacer(),
-            Align(
-              alignment: Alignment.bottomCenter,
+            const SizedBox(height: 20),
+            Center(
               child: Column(
                 children: [
                   const Text(
@@ -154,40 +157,21 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     width: double.infinity,
                     height: 60,
-                    child: GoogleButton(
+                    child: HomePageButton(
                       onPressed: () =>
-                          Navigator.pushNamed(context, '/register_page'),
+                          Navigator.pushNamed(context, '/google_login'),
                       label: 'Login with Google',
                       textColor: Colors.black,
+                      borderColor: Colors.grey.shade300,
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 40,
-            ),
+            const SizedBox(height: 40),
           ],
         ),
       ),
     );
   }
 }
-
-
-
-
-
-
-      // enabledBorder: OutlineInputBorder(
-                  //   borderRadius: BorderRadius.circular(10),
-                  //   borderSide: const BorderSide(
-                  //       color:
-                  //           Colors.red), // Set the enabled border color to red
-                  // ),
-                  // focusedBorder: OutlineInputBorder(
-                  //   borderRadius: BorderRadius.circular(10),
-                  //   borderSide: const BorderSide(
-                  //       color:Colors.red
-                  //       ),
-                  // ),

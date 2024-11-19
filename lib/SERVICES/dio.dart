@@ -5,7 +5,7 @@ final dio = Dio();
 
 Dio fetches() {
   // dio.options.baseUrl = 'http://localhost:3000/api/v1/auth/';
-  dio.options.baseUrl = 'http://127.0.0.1:3000/api/v1/auth/';
+  dio.options.baseUrl = 'http://127.0.0.1:3000/api/v1/';
   dio.options.connectTimeout = Duration(seconds: 60);
   dio.options.receiveTimeout = Duration(seconds: 60);
   dio.options.headers = {

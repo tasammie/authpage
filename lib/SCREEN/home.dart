@@ -13,24 +13,31 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                HomePageButton(
-                  label: 'Register',
-                  onPressed: () =>
-                      Navigator.pushNamed(context, '/register_page'),
-                  borderColor: Colors.black,
+                // Register Button
+                Expanded(
+                  child: HomePageButton(
+                    label: 'Register',
+                    onPressed: () =>
+                        Navigator.pushNamed(context, '/register_page'),
+                    borderColor: Colors.black,
+                  ),
                 ),
-                HomePageButton(
-                  label: 'Login',
-                  onPressed: () => Navigator.pushNamed(context, '/login_page'),
-                  backgroundColor: const Color(0xFF2B8761),
-                  textColor: Colors.white,
+                const SizedBox(width: 10), // Space between the buttons
+                // Login Button
+                Expanded(
+                  child: HomePageButton(
+                    label: 'Login',
+                    onPressed: () =>
+                        Navigator.pushNamed(context, '/login_page'),
+                    backgroundColor: const Color(0xFF2B8761),
+                    textColor: Colors.white,
+                  ),
                 ),
               ],
             ),
@@ -40,14 +47,15 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               width: double.infinity,
               height: 60,
-              child: GoogleButton(
+              child: HomePageButton(
                 onPressed: () => Navigator.pushNamed(context, '/register_page'),
                 label: 'Login with Google',
                 textColor: Colors.black,
+                borderColor: Colors.black12,
               ),
             ),
             const SizedBox(
-              height: 40,
+              height: 10,
             ),
           ],
         ),
